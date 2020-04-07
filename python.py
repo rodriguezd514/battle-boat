@@ -151,60 +151,71 @@ row1["2"] -= 1
 col1["2"] -= 1
 row2["2"] -= 1
 col2["2"] -= 1
-while True:
-  clear()
-  print("Player 1, your turn.")
-  print_board(board["1"])
-  guess_row = int(input("Guess Row: ")) - 1
-  guess_col = int(input("Guess Col: "))  - 1
-  if guess_row == row1["2"] and guess_col == col1["2"] or guess_row == row2["2"] and guess_row == col2["2"]:
-    clear()
-    board["1"][guess_row][guess_col] = 'S'
-    print_board(board["1"])
-    print "You hit my battleboat!"
-    if guess_row == row1["2"] and guess_col == col1["2"]:
-      boat1["2"] = "Hit"
-    if guess_row == row2["2"] and guess_col == col2["2"]:
-      boat2["2"] = "Hit"
-    if boat1["2"] == "Hit" and boat2["2"] == "Hit":
-      clear()
-      print_board(board["1"])
-      print "PLAYER 1 WINS!"
-      break
-    elif guess_row not in range(8) or guess_col not in range(8):
-      print "That didn't even land in the ocean."
-      if (board["1"][guess_row][guess_col] == "X"):
-        print "You guessed that one already."
-    elif guess_row != row1["2"] or guess_row != row2["2"] or guess_col != col1["2"] or guess_col != col2["2"]:
-        print "You missed my battleboat!"
-        board["1"][guess_row][guess_col] = "X"
+def turn(player):
+  enemy = "1"
+  if player == "1":
+    enemy = "2"
 
   clear()
-  print("Player 2, your turn.")
-  print_board(board["2"])
+  print("Player " + player + ", your turn.")
+  print_board(board[player])
   guess_row = int(input("Guess Row: ")) - 1
-  guess_col = int(input("Guess Col: ")) - 1
-  if guess_row == row1["1"] and guess_col == col1["1"] or guess_row == row2["1"] and guess_row == col2["1"]:
+  guess_col = int(input("Guess Col: "))  - 1
+  if guess_row == row1[enemy] and guess_col == col1[enemy] or guess_row == row2[enemy] and guess_row == col2[enemy]:
     clear()
-    board["2"][guess_row][guess_col] = 'S'
-    print_board(board["2"])
+    board[player][guess_row][guess_col] = 'S'
+    print_board(board[player])
     print "You hit my battleboat!"
-    if guess_row == row1["1"] and guess_col == col1["1"]:
-      boat1["1"] = "Hit"
-    if guess_row == row2["1"] and guess_col == col2["1"]:
-      boat2["1"] = "Hit"
-    if boat1["1"] == "Hit" and boat2["1"] == "Hit":
+    if guess_row == row1[enemy] and guess_col == col1[enemy]:
+      boat1[enemy] = "Hit"
+    if guess_row == row2[enemy] and guess_col == col2[enemy]:
+      boat2[enemy] = "Hit"
+    if boat1[enemy] == "Hit" and boat2[enemy] == "Hit":
       clear()
-      print_board(board["2"])
-      print "PLAYER 2 WINS!"
-      break
-    else:
-      print board["2"][row1["1"]][col1["1"]], board["2"][row2["1"]][col2["1"]]
-  else:
-    if guess_row not in range(8) or guess_col not in range(8):
-      print "That shot didn't even land in the ocean."
-    elif(board["2"][guess_row][guess_col] == "X"):
-      print "You guessed that one already."
-    else:
-      print "You missed my battleboat!"
-      board["2"][guess_row][guess_col] = "X"
+      print_board(board[player])
+      print "PLAYER " + player + " WINS!"
+      return False
+    elif guess_row not in range(8) or guess_col not in range(8):
+      print "That didn't even land in the ocean."
+      if (board[player][guess_row][guess_col] == "X"):
+        print "You guessed that one already."
+    elif guess_row != row1[enemy] or guess_row != row2[enemy] or guess_col != col1[enemy] or guess_col != col2[enemy]:
+        print "You missed my battleboat!"
+        board[player][guess_row][guess_col] = "X"
+  return True
+while True:
+  if not turn("1"):
+    break
+  if not turn("2"):
+    break
+
+
+  # clear()
+  # print("Player 2, your turn.")
+  # print_board(board["2"])
+  # guess_row = int(input("Guess Row: ")) - 1
+  # guess_col = int(input("Guess Col: ")) - 1
+  # if guess_row == row1["1"] and guess_col == col1["1"] or guess_row == row2["1"] and guess_row == col2["1"]:
+  #   clear()
+  #   board["2"][guess_row][guess_col] = 'S'
+  #   print_board(board["2"])
+  #   print "You hit my battleboat!"
+  #   if guess_row == row1["1"] and guess_col == col1["1"]:
+  #     boat1["1"] = "Hit"
+  #   if guess_row == row2["1"] and guess_col == col2["1"]:
+  #     boat2["1"] = "Hit"
+  #   if boat1["1"] == "Hit" and boat2["1"] == "Hit":
+  #     clear()
+  #     print_board(board["2"])
+  #     print "PLAYER 2 WINS!"
+  #     break
+  #   else:
+  #     print board["2"][row1["1"]][col1["1"]], board["2"][row2["1"]][col2["1"]]
+  # else:
+  #   if guess_row not in range(8) or guess_col not in range(8):
+  #     print "That shot didn't even land in the ocean."
+  #   elif(board["2"][guess_row][guess_col] == "X"):
+  #     print "You guessed that one already."
+  #   else:
+  #     print "You missed my battleboat!"
+  #     board["2"][guess_row][guess_col] = "X"
